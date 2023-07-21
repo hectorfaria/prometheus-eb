@@ -15,37 +15,21 @@ resource "local_file" "docker_run_config" {
   filename = "${path.module}/Dockerrun.aws.json"
 }
 
-/* resource "aws_elastic_beanstalk_application" "prometheus" {
+resource "aws_elastic_beanstalk_application" "prometheus" {
   name        = "ebs-prometheus"
   description = "Prometheus with Elastic beanstalk deployment"
 }
 
-resource "aws_elastic_beanstalk_environment" "prometheus_env" {
-  name                = "ebs-prometheus-env"
-  application         = "ebs-prometheus"
-  cname_prefix        = "myprometheus"
-  solution_stack_name = var.solution_stack_name
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "VPCId"
-    value     = var.vpc_id
-  }
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "Subnets"
-    value     = join(",", var.subnets)
-  }
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "IamInstanceProfile"
-    value     = var.instance_role
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "ServiceRole"
-    value     = var.ebs_service_role
-  }
-
+resource "aws_elastic_beanstalk_application_version" "app_version" {
+  name        = local.docker_run_config_sha
+  application = aws_elastic_beanstalk_application.prometheus.name
+  description = "Elastic Beanstalk running Prometheus on Docker"
 }
- */
+
+resource "aws_elastic_beanstalk_environment" "prometheus-env" {
+  name                = "prometheus-env"
+  application         = aws_elastic_beanstalk_application.prometheus.name
+  solution_stack_name = var.solution_stack_name
+  version_label = aws_elastic_beanstalk_application_version.app_version.name
+  cname_prefix = "prometheus-app"
+}
