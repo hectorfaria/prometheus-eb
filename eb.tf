@@ -24,12 +24,14 @@ resource "aws_elastic_beanstalk_application_version" "app_version" {
   name        = local.docker_run_config_sha
   application = aws_elastic_beanstalk_application.prometheus.name
   description = "Elastic Beanstalk running Prometheus on Docker"
+  bucket      = aws_s3_bucket.docker_run_bucket.id
+  key         = aws_s3_object.docker_run_object.id
 }
 
 resource "aws_elastic_beanstalk_environment" "prometheus-env" {
   name                = "prometheus-env"
   application         = aws_elastic_beanstalk_application.prometheus.name
   solution_stack_name = var.solution_stack_name
-  version_label = aws_elastic_beanstalk_application_version.app_version.name
-  cname_prefix = "prometheus-app"
+  version_label       = aws_elastic_beanstalk_application_version.app_version.name
+  cname_prefix        = "prometheus-app"
 }

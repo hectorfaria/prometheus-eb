@@ -1,3 +1,4 @@
 Dockerrun.aws.json
 .terraform*
 .terraform.lock.hcl
+secrets.tf
