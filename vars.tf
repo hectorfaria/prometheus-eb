@@ -10,23 +10,15 @@ variable "aws_availability_zone" {
   default = "us-east-1e"
 }
 variable "instance_type" {
-  type    = string
-  default = "t2.medium"
-}
-variable "spot_price" {
   type        = string
-  default     = "0.04"
-  description = "Maximum price to pay for spot instance"
+  description = "EC2 Instance Type"
+  default     = "t2.micro"
 }
-variable "spot_type" {
-  type        = string
-  default     = "one-time"
-  description = "Spot instance type, this value only applies for spot instance type."
-}
-variable "spot_instance" {
-  type        = string
-  default     = "true"
-  description = "True if we want to use a spot instance instead of a regular one"
+
+variable "max_instances" {
+  type        = number
+  description = "The maximum amount of instances that the load balancer can reach"
+  default     = 1
 }
 
 variable "solution_stack_name" {
