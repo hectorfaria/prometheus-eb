@@ -2,13 +2,13 @@ resource "local_file" "docker_run_config" {
   content = jsonencode({
     "AWSEBDockerrunVersion" : "1",
     "Image" : {
-      "Name" : "prom/prometheus",
+      "Name" : "${var.prom_img}",
       "Update" : "true"
     },
     "Ports" : [
       {
-        "ContainerPort" : "9090",
-        "HostPort" : "9090"
+        "ContainerPort" : "9100",
+        "HostPort" : "9100"
       }
     ]
   })
@@ -74,7 +74,7 @@ resource "aws_elastic_beanstalk_environment" "prometheus-env" {
   setting {
     namespace = "aws:elasticbeanstalk:environment:process:default"
     name      = "HealthCheckPath"
-    value     = "/status"
+    value     = "/metrics"
   }
 
 }

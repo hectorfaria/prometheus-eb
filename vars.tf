@@ -26,3 +26,9 @@ variable "solution_stack_name" {
   default     = "64bit Amazon Linux 2 v3.5.9 running Docker"
   description = "The solution stack name, this is need to specify which environment you need"
 }
+
+variable "prom_img" {
+  type        = string
+  description = "The Docker image value"
+  default     = "prom/node-exporter"
+}
